@@ -1,0 +1,198 @@
+<section class="mt-0 pt-0 min-vh-100">
+  <div class="container mt-0 pt-0">
+        <div class="row justify-content-center align-items-center">
+          <!-- Logo -->
+          <div class="col-12 text-center my-2 me-5 pt-0">
+            <img class="logo" src="../../../../assets/images/logo.svg" alt="Logo">
+        </div>
+          <!-- Login Form -->
+      <div class="col-lg-10">
+        <div class="auth-form text-start">
+          <div class="my-0">
+            <p>Welcome To PMS</p>
+            <h2> <span class="special">C</span>reate New Account</h2>
+          </div>
+          <form [formGroup]="registerForm" (ngSubmit)="sendData(registerForm)">
+            <div class="image-upload-wrapper">
+                        <ngx-file-drop
+                          (onFileDrop)="dropped($event)"
+                          accept="image/*"
+                          [multiple]="false"
+                          dropZoneLabel=""
+                          dropZoneClassName="hidden-dropzone"
+                          [showBrowseBtn]="true"
+                          browseBtnClassName="custom-browse-btn"
+                        >
+                          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                            <div class="upload-area" (click)="openFileSelector()">
+                              <ng-container *ngIf="!imagePreview">
+                                <p class="upload mt-2">Upload Image</p>
+                              </ng-container>
+                      
+                              <ng-container *ngIf="imagePreview">
+                                <div class="image-container">
+                                  <img [src]="imagePreview" alt="Preview" class="img-preview">
+                                  <i class="fa fa-close delete-icon" *ngIf="imagePreview" (click)="deleteImage()"></i>
+                                </div>
+                              </ng-container>
+                            </div>
+                          </ng-template>
+                        </ngx-file-drop>
+                      </div>
+            <div class="row justify-content-between">
+              <div class="col-md-6">
+                <div class="input-form mb-3">
+                  <label for="userName" class="form-label">userName</label>
+                  <div class="input-group">
+                    <input type="text" formControlName="userName" id="userName" class="form-control input-field"
+                      placeholder="Enter your name" aria-label="userName" aria-describedby="basic-addon1">
+                  </div>
+                  <small class="text-danger fw-medium d-block fs-6" *ngIf="
+                      registerForm?.get('userName')?.invalid &&
+                      registerForm?.get('userName')?.touched
+                    ">
+                    <span *ngIf="registerForm?.get('userName')?.errors?.['required']; else minlengthError">
+                      UserName is required.
+                    </span>
+                    <ng-template #minlengthError>
+                      <span *ngIf="registerForm?.get('userName')?.errors?.['minlength']; else maxlengthError">
+                        UserName must be at least 3 characters.
+                      </span>
+                    </ng-template>
+                    <ng-template #maxlengthError>
+                      <span *ngIf="registerForm?.get('userName')?.errors?.['maxlength']; else patternError">
+                        The userName may not be greater than 8 characters.
+                      </span>
+                    </ng-template>
+                    <ng-template #patternError>
+                      <span *ngIf="registerForm?.get('userName')?.errors?.['pattern']">
+                        The userName must contain characters and end with
+                        numbers without spaces.
+                      </span>
+                    </ng-template>
+                  </small>
+                </div>
+                <div class="input-form mb-3">
+                  <label for="country" class="form-label">country</label>
+                  <div class="input-group">
+                    <input type="country" formControlName="country" id="country" class="form-control input-field"
+                      placeholder="Enter your country" aria-label="country" aria-describedby="basic-addon1">
+                  </div>
+                  <small class="text-danger fw-medium d-block fs-6" *ngIf="
+                  registerForm?.get('country')?.invalid &&
+                  registerForm?.get('country')?.touched">
+                    <span *ngIf="registerForm?.get('country')?.errors?.['required']">
+                      Country is required.
+                    </span>
+                  </small>
+                </div>
+                <div class="input-form mb-3">
+                  <label for="password" class="form-label">password</label>
+                  <div class="input-group">
+                    <input [type]="isPasswordHidden ? 'password' : 'text'" formControlName="password" id="password"
+                      class="form-control input-field" placeholder="Enter your password" aria-label="password"
+                      aria-describedby="basic-addon1">
+                    <a (click)="(isPasswordHidden = !isPasswordHidden)">
+                      <span class=" icon-style eye-icon" id="basic-addon1">
+                        <i class="fa-solid" [class]="isPasswordHidden ? 'fa-eye-slash' : 'fa-eye'"></i></span>
+                    </a>
+                  </div>
+                  <small class="text-danger fw-medium d-block fs-6" *ngIf="registerForm?.get('password')?.touched">
+                    <span *ngIf="registerForm?.get('password')?.errors?.['required']; else checkMinLength">
+                      Password is required.
+                    </span>
+                    <ng-template #checkMinLength>
+                      <span *ngIf="registerForm?.get('password')?.errors?.['minlength']; else checkPattern">
+                        Password must be at least 6 characters.
+                      </span>
+                    </ng-template>
+                    <ng-template #checkPattern>
+                      <span *ngIf="registerForm?.get('password')?.errors?.['pattern']">
+                        The password must include at least one lowercase letter,
+                        one uppercase letter, one digit, and one special
+                        character.
+                      </span>
+                    </ng-template>
+                  </small>
+                </div>
+
+              </div>
+              <div class="col-md-6">
+                <div class="input-form mb-3">
+                  <label for="email" class="form-label">E-mail</label>
+                  <div class="input-group">
+                    <input type="email" formControlName="email" id="email" class="form-control input-field"
+                      placeholder="Enter your E-mail" aria-label="email" aria-describedby="basic-addon1">
+                  </div>
+                  <small class="text-danger fw-medium d-block fs-6"
+                    *ngIf="registerForm?.get('email')?.invalid && registerForm?.get('email')?.touched">
+                    <span *ngIf="registerForm?.get('email')?.errors?.['required']">Email is required.</span>
+                    <span *ngIf="registerForm?.get('email')?.errors?.['email']">Enter a valid email.</span>
+                  </small>
+                </div>
+                <div class="input-form mb-3">
+                  <label for="phoneNumber" class="form-label">phoneNumber</label>
+                  <div class="input-group">
+                    <input type="phoneNumber" formControlName="phoneNumber" id="phoneNumber"
+                      class="form-control input-field" placeholder="Enter your phoneNumber" aria-label="phoneNumber"
+                      aria-describedby="basic-addon1">
+                  </div>
+                  <small class="text-danger fw-medium d-block fs-6" *ngIf="
+                  registerForm?.get('phoneNumber')?.invalid &&
+                  registerForm?.get('phoneNumber')?.touched">
+                    <span *ngIf="registerForm?.get('phoneNumber')?.errors?.['required']">
+                      Phone number is required.
+                    </span>
+                  </small>
+                </div>
+                <div class="input-form mb-3">
+                  <label for="password" class="form-label">confirmPassword</label>
+                  <div class="input-group">
+                    <input [type]="isConfirmPasswordHidden ? 'password' : 'text'" formControlName="confirmPassword"
+                      id="confirmPassword" class="form-control input-field" placeholder="confirm your password"
+                      aria-label="confirmPassword" aria-describedby="basic-addon1">
+                    <a (click)="(isConfirmPasswordHidden = !isConfirmPasswordHidden)">
+                      <span class=" icon-style eye-icon" id="basic-addon1">
+                        <i class="fa-solid" [class]="isConfirmPasswordHidden ? 'fa-eye-slash' : 'fa-eye'"></i></span>
+                    </a>
+                  </div>
+                  <small class="text-danger fw-medium d-block fs-6"
+                    *ngIf="registerForm?.get('confirmPassword')?.touched">
+                    <span *ngIf="registerForm?.get('confirmPassword')?.errors?.['required']; else mismatchError">
+                      Confirm Password is required.
+                    </span>
+                    <ng-template #mismatchError>
+                      <span *ngIf="registerForm?.errors?.['mismatch']">
+                        Passwords do not match.
+                      </span>
+                    </ng-template>
+                  </small>
+                </div>
+              </div>
+
+            </div>
+            <div>
+              <button class="primary-color w-100" [disabled]="registerForm.invalid"
+                [ngStyle]="{'pointer-events': registerForm.invalid ? 'none' : 'auto' }">
+                Register</button>
+            </div>
+          </form>
+          
+          </div>
+         
+        </div>
+        </div>
+
+
+
+
+
+
+      
+
+
+
+
+    </div>
+  
+</section>
